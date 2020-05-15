@@ -16,28 +16,28 @@ THEN I understand the codebase
 ```
 ## Table of Contents
 
-* ['Develop' - The Main Directory](#'Develop---The-Main-Directory)
-* [The 'config' Folder](#The-'config'-Folder)
-* [The 'models' Folder](#The-'models'-Folder)
-* [The 'public' Folder](#The-'public'-Folder)
-* [The 'routes' Folder](#The-'routes'-Folder)
+* [Develop](#Develop)
+* [Config](#Config)
+* [Models](#Models)
+* [Public](#public)
+* [Routes](#Routes)
 * [Adding Changes](#Adding-Changes)
 
-## 'Develop' - The Main Directory
+## Develop
 
-## The 'config' Folder
+## Config
 
-### Subfolder: 'middleware'
+### Middleware
 
-## The 'models' Folder
+## Models
 
-## The 'public' Folder
+## Public
 
-### Subfolder: 'js'
+### JS 
 
-### Subfolder: 'stylesheets'
+### Stylesheets
 
-## The 'routes' Folder
+## Routes
 
 ## Adding Changes
 
