@@ -74,6 +74,8 @@ ________________________________________________________________________________
 
 ## Config
 
+This folder contains a config.json and passport.js file, along with a 'middleware' subfolder.
+
 ___________________________________________________________________________________
 **config.json**
 
@@ -81,25 +83,44 @@ Contains database config variables for different environments (development, test
 ___________________________________________________________________________________
 **passport.js**
 
-1. Imports the 'passport' and 'passport-local' npm packages (line 1 & 2) which provide authentication using a username and password in Node.js applications using Express.
+This file sets up login authentication, and is exported for use in other files (line 49). It:
+
+1. Imports the 'passport' and 'passport-local' npm packages (line 1 & 2).    
+  Passport provides authentication using a username and password in Node.js applications. In this application, the username is set up to be an email login instead (line 10).
   
-2. Imports the database models (line 4).
+2. Imports the database models (line 4).  
+  We access the 'user' data model and call the findOne method in order to find the user with the same email from login. (lines 14 to 17).
+
+3. Validation occurs to check is the email exists, and whether its accompanying password matches what is in the database or not (lines 20 to 30). Validation is done, and returns messages regarding errors or, if none, returns the matching user.
 ___________________________________________________________________________________
 
 ### Middleware
 
+Middleware is software that acts as a bridge between an operating system or database and applications. This subfolder contains a custom middleware file, isAuthenticated.js.
 ___________________________________________________________________________________
 **isAuthenticated.js**
 
-This is a custom middleware file that restricts routes to users that are not logged in. It exports a function that checks if a user tyring to access a route is loggin in or not. If the condition is met, the request continues on to the next route. If the condition is not met, the user is redirected to the '/' HTML route, which direct send the signup.html page.
+This file restricts routes to users that are not logged in. It exports a function that checks if a user tyring to access a route is loggin in or not. If the condition is met, the request continues on to the next route. If the condition is not met, the user is redirected to the '/' HTML route, which direct send the signup.html page.
 ___________________________________________________________________________________
 
 ## Models
 
+This folder contains two files: index.js and user.js  
+These files are used by the application to hold and manipulate data using Sequelize.
 ___________________________________________________________________________________
 **index.js**
+
+This files imports built-in Node modules 'fs' and 'path', as well as the installed npm module 'sequelize'. It exports the 'db' object variable.
+
+Lines 11 to 15 set up the 'sequelize' variable according to the variables in config.json for the 'development' environment by default, and if envirorment is switched, it will use those configurations (like production or testing).
+
+Then, the 'fs' module is used to read file names and paths of all data models (currently, there is just one: user.js) and will import 'sequelize' to all.
 _______________________________________________________________________________________
 **user.js**
+
+This file requirers the 'bcrypt' npm module (line 2), which provides password hashing. It exports a function that defines the 'User' model table, with 'email' and 'password' columns (and the desired validation/properties for each).
+
+It also adds methods to the 'User' model which compare hashed and unhashed passwords and pre-hash passwords.
 _______________________________________________________________________________________
 
 ## Public
@@ -152,13 +173,17 @@ ________________________________________________________________________________
 
 ### Stylesheets
 
+A subfolder for frontend CSS files.
+
 ___________________________________________________________________________________
 **style.css**
 
-This file has minimal custom css (only customizes margins). Most CSS styling for the HTML files is done with Bootstrap classes.
+This file has minimal custom css (only customizes margins). Most CSS styling for these HTML files is done with Bootstrap classes.
 ___________________________________________________________________________________
 
 ## Routes
+
+The 'routes' folder contains all routes that can be requested by the user in the application, both API and HTML.
 
 ___________________________________________________________________________________
 **api-routes.js**
@@ -166,7 +191,7 @@ ________________________________________________________________________________
 This JavaScript file sets up API routes and handles requests made to each of those routes. 
 
 1. '/api/login'    
-  This route requires the passport.js file in the 'config' folder
+  This route requires the passport.js file to authenticate login. 
 
 2. '/api/signup'  
 
