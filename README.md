@@ -191,13 +191,16 @@ ________________________________________________________________________________
 This JavaScript file sets up API routes and handles requests made to each of those routes. 
 
 1. '/api/login'    
-  This route requires the passport.js file to authenticate login. 
+  This route requires the passport.js file to authenticate login and return the matching user. If login is valid, the frontend API call will then redirect the user to the members page.
 
-2. '/api/signup'  
+2. '/api/signup'   
+  This route requires 'models' to define a 'db' variable. The sequelize 'create' method is used with the User model to add the new user to the database table with column values from the request body (sign up form inputs). That new user is then directed to '/api/login' and autmatically logged in.
 
-3. '/logout'  
+3. '/logout'    
+  Passport makes the logout function (line 31) available for the request. It can be called from this route to terminate a login session an removes the user property. The user is then redirected to the '/' route.
 
 4. '/api/user_data  
+  If there is a user property (a user is login in), this route will retrieve and send back the users email and id. If there is no user logged in, it returns an empty objects. This data is used to display user's email on the member's page.
 ___________________________________________________________________________________
 **html-routes.js**
 
@@ -215,4 +218,35 @@ ________________________________________________________________________________
 
 ## Adding Changes
 
-*(At the end of the tutorial, add instructions for how you could now add changes to this project.)*
+Now that each file and folder and their interconnectivity is understood, changes can be added with the full scope of their effect in mind. Every changed should be checked to make sure it is reflected in files it is dependent on or that are dependent of it. This will ensure new functionality doesn't break and is fully intergrated into the application.
+
+**Example: Changes to a model**  
+To add more data columns to our User table model (like username, first name, last name):
+1. In MySQL Workbench, drop any pre-existing 'user' table in the 'passport_demo' database.
+1. Add new data properties to 'User' varable in user.js, along with desired valiation.
+2. Add input fields for new data properties in signup.html (login will remain just email and password, so no changes needed for login.html or passport.js).
+3. In signup.js, grab the new field inputs form the DOM using jQuery as shown in lines 3 to 5.
+4. Then, add those input values to the userData variable (line 10) and to the 'if' condition in line 15.   
+  Example: `if (!userData.username || !userData.email || !userData.password)`
+5. Make sure the signUpUser function (line 26) allows parameters for new data to be passed in.   
+  Example (with username being added):
+    ```
+    function signUpUser(username, email, password) {
+        $.post("/api/signup", {
+          username: username,
+          email: email,
+          password: password
+        })
+    ```
+7. Now, we need to make sure API routes match the new changes. In api-routes.js, lines 17 to 20, add new properties to the object being passed into the 'create' method so that those new form input values are used to create the new user.  
+  Example:
+    ```
+    db.User.create({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
+      })
+    ```
+8. To change the members page to display username instead of email, include the username property in the response object (line 44) of api-routes.js '/api/user-data'. 
+9. Then, in members.js, change the text for the empty span to 'data.username'.
+10. And that's it! When the server is starated up again, a new user table will be made in teh database including the new changes.
