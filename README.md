@@ -155,7 +155,8 @@ ________________________________________________________________________________
 ___________________________________________________________________________________
 **style.css**
 
-This file has minimal custom css (only customizes margins). Most CSS styling for the HTML files is done with Bootstrap classes.___________________________________________________________________________________
+This file has minimal custom css (only customizes margins). Most CSS styling for the HTML files is done with Bootstrap classes.
+___________________________________________________________________________________
 
 ## Routes
 
